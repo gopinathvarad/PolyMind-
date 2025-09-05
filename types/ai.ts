@@ -14,6 +14,14 @@ export interface AIResponse {
   error?: string;
 }
 
+export interface ChatMessage {
+  id: string;
+  content: string;
+  timestamp: Date;
+  isUser: boolean;
+  modelId?: string; // Only for AI responses
+}
+
 export interface Message {
   id: string;
   content: string;

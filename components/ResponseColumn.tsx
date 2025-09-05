@@ -1,18 +1,20 @@
 "use client";
 
-import { AIModel, AIResponse } from "@/types/ai";
+import { AIModel, AIResponse, ChatMessage } from "@/types/ai";
 import { AlertCircle, Loader2 } from "lucide-react";
 
 interface ResponseColumnProps {
   model: AIModel;
   response?: AIResponse;
   isLoading: boolean;
+  chatHistory: ChatMessage[];
 }
 
 export default function ResponseColumn({
   model,
   response,
   isLoading,
+  chatHistory,
 }: ResponseColumnProps) {
   const getModelDisplayName = (modelId: string) => {
     const displayNames: Record<string, string> = {
@@ -46,7 +48,7 @@ export default function ResponseColumn({
   };
 
   return (
-    <div className="flex flex-col h-[400px] bg-black border border-gray-700 rounded-lg overflow-hidden">
+    <div className="flex flex-col h-[500px] bg-black border border-gray-700 rounded-lg overflow-hidden">
       {/* Header */}
       <div className="p-4">
         <div className={`${getHeaderColor()} rounded-lg p-4 text-white`}>
@@ -95,28 +97,9 @@ export default function ResponseColumn({
 
       {/* Chat Area */}
       <div className="flex-1 bg-black p-4 overflow-y-auto">
-        {isLoading && (
-          <div className="flex items-center justify-center h-full">
-            <div className="flex flex-col items-center gap-3 text-gray-400">
-              <div className="relative">
-                <Loader2 size={32} className="animate-spin" />
-              </div>
-              <span className="text-sm font-medium">
-                Generating response...
-              </span>
-            </div>
-          </div>
-        )}
-
-        {response?.error && (
-          <div className="flex items-center gap-3 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
-            <AlertCircle size={20} className="text-red-400" />
-            <span className="text-sm text-red-300">{response.error}</span>
-          </div>
-        )}
-
-        {response?.content && !response.error && (
-          <div className="space-y-4">
+        <div className="space-y-4">
+          {/* Show initial greeting if no chat history */}
+          {chatHistory.length === 0 && !isLoading && (
             <div className="flex items-start gap-3">
               <div
                 className={`w-8 h-8 ${getAvatarColor()} rounded-full flex items-center justify-center flex-shrink-0`}
@@ -124,34 +107,96 @@ export default function ResponseColumn({
                 <span className="text-white text-sm">🤖</span>
               </div>
               <div className="bg-gray-800 text-white p-3 rounded-lg max-w-[80%]">
-                <div className="whitespace-pre-wrap leading-relaxed">
-                  {response.content}
+                <div className="text-gray-300">
+                  {model.id === "openai/gpt-5-chat" && "Hey! How's it going?"}
+                  {model.id === "anthropic/claude-sonnet-4" &&
+                    "Hello! How are you doing today? Is there anything I can help you with?"}
+                  {model.id === "google/gemini-2.5-pro" &&
+                    "Hello! How can I help you today?"}
+                  {model.id === "deepseek/deepseek-r1-0528" &&
+                    "Hi there! 👋 How can I help you today? Whether you have a question, need advice, or just want to chat—I'm here for it! 😊 What's on your mind?"}
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {!response && !isLoading && (
-          <div className="flex items-start gap-3">
-            <div
-              className={`w-8 h-8 ${getAvatarColor()} rounded-full flex items-center justify-center flex-shrink-0`}
-            >
-              <span className="text-white text-sm">🤖</span>
+          {/* Display chat history */}
+          {chatHistory.map((message) => (
+            <div key={message.id} className="flex items-start gap-3">
+              {message.isUser ? (
+                // User message
+                <>
+                  <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg
+                      className="w-4 h-4 text-white"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <div className="bg-blue-600 text-white p-3 rounded-lg max-w-[80%] ml-auto">
+                    <div className="whitespace-pre-wrap leading-relaxed">
+                      {message.content}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                // AI message
+                <>
+                  <div
+                    className={`w-8 h-8 ${getAvatarColor()} rounded-full flex items-center justify-center flex-shrink-0`}
+                  >
+                    <span className="text-white text-sm">🤖</span>
+                  </div>
+                  <div className="bg-gray-800 text-white p-3 rounded-lg max-w-[80%]">
+                    <div className="whitespace-pre-wrap leading-relaxed">
+                      {message.content}
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
-            <div className="bg-gray-800 text-white p-3 rounded-lg max-w-[80%]">
-              <div className="text-gray-300">
-                {model.id === "openai/gpt-5-chat" && "Hey! How's it going?"}
-                {model.id === "anthropic/claude-sonnet-4" &&
-                  "Hello! How are you doing today? Is there anything I can help you with?"}
-                {model.id === "google/gemini-2.5-pro" &&
-                  "Hello! How can I help you today?"}
-                {model.id === "deepseek/deepseek-r1-0528" &&
-                  "Hi there! 👋 How can I help you today? Whether you have a question, need advice, or just want to chat—I'm here for it! 😊 What's on your mind?"}
+          ))}
+
+          {/* Show loading indicator */}
+          {isLoading && (
+            <div className="flex items-start gap-3">
+              <div
+                className={`w-8 h-8 ${getAvatarColor()} rounded-full flex items-center justify-center flex-shrink-0`}
+              >
+                <span className="text-white text-sm">🤖</span>
+              </div>
+              <div className="bg-gray-800 text-white p-3 rounded-lg max-w-[80%]">
+                <div className="flex items-center gap-2 text-gray-400">
+                  <Loader2 size={16} className="animate-spin" />
+                  <span className="text-sm">Generating response...</span>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
+
+          {/* Show error if any */}
+          {response?.error && (
+            <div className="flex items-start gap-3">
+              <div
+                className={`w-8 h-8 ${getAvatarColor()} rounded-full flex items-center justify-center flex-shrink-0`}
+              >
+                <span className="text-white text-sm">🤖</span>
+              </div>
+              <div className="bg-red-500/10 border border-red-500/30 text-red-300 p-3 rounded-lg max-w-[80%]">
+                <div className="flex items-center gap-2">
+                  <AlertCircle size={16} />
+                  <span className="text-sm">{response.error}</span>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

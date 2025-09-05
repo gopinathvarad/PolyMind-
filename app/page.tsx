@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { AIResponse } from "@/types/ai";
+import { AIResponse, ChatMessage } from "@/types/ai";
 import { getModelById } from "@/lib/ai-models";
 import ModelSelector from "@/components/ModelSelector";
 import MessageInput from "@/components/MessageInput";
@@ -16,6 +16,9 @@ export default function Home() {
   ]);
   const [responses, setResponses] = useState<Record<string, AIResponse>>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [chatHistory, setChatHistory] = useState<Record<string, ChatMessage[]>>(
+    {}
+  );
 
   const handleSendMessage = async (message: string) => {
     if (selectedModels.length === 0) {
@@ -24,6 +27,22 @@ export default function Home() {
     }
 
     setIsLoading(true);
+
+    // Add user message to chat history for all selected models
+    const userMessage: ChatMessage = {
+      id: crypto.randomUUID(),
+      content: message,
+      timestamp: new Date(),
+      isUser: true,
+    };
+
+    setChatHistory((prev) => {
+      const newHistory = { ...prev };
+      selectedModels.forEach((modelId) => {
+        newHistory[modelId] = [...(newHistory[modelId] || []), userMessage];
+      });
+      return newHistory;
+    });
 
     // Initialize loading responses
     const loadingResponses: Record<string, AIResponse> = {};
@@ -59,6 +78,20 @@ export default function Home() {
 
       data.responses.forEach((response: AIResponse) => {
         newResponses[response.modelId] = response;
+
+        // Add AI response to chat history
+        const aiMessage: ChatMessage = {
+          id: response.id,
+          content: response.content,
+          timestamp: response.timestamp,
+          isUser: false,
+          modelId: response.modelId,
+        };
+
+        setChatHistory((prev) => ({
+          ...prev,
+          [response.modelId]: [...(prev[response.modelId] || []), aiMessage],
+        }));
       });
 
       setResponses(newResponses);
@@ -129,7 +162,7 @@ export default function Home() {
       </header>
 
       {/* Main Content Area */}
-      <div className="flex-1 p-6 pb-40">
+      <div className="flex-1 p-6 pb-72">
         <div className="max-w-7xl mx-auto">
           {/* Chat Boxes - Horizontal Layout */}
           {selectedModels.length > 0 && (
@@ -144,6 +177,7 @@ export default function Home() {
                     model={model}
                     response={responses[modelId]}
                     isLoading={isLoading && responses[modelId]?.isLoading}
+                    chatHistory={chatHistory[modelId] || []}
                   />
                 );
               })}
