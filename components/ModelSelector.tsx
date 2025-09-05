@@ -34,30 +34,14 @@ export default function ModelSelector({
     return displayNames[modelId] || model.name;
   };
 
-  const getModelIcon = (modelId: string) => {
-    const model = AVAILABLE_MODELS.find((m) => m.id === modelId);
-    if (!model) return "🤖";
-
-    // Custom icons for the latest models
-    const customIcons: Record<string, string> = {
-      "openai/gpt-5-chat": "🤖",
-      "anthropic/claude-sonnet-4": "🧠",
-      "google/gemini-2.5-pro": "💎",
-      "deepseek/deepseek-r1-0528": "🔍",
-    };
-
-    return customIcons[modelId] || model.icon;
-  };
-
   return (
     <div className="flex items-center gap-4 overflow-x-auto pb-2">
       {AVAILABLE_MODELS.map((model) => {
         const isSelected = selectedModels.includes(model.id);
         return (
           <div key={model.id} className="flex items-center gap-3 min-w-fit">
-            {/* Model Icon and Name */}
+            {/* Model Name */}
             <div className="flex items-center gap-2">
-              <span className="text-lg">{getModelIcon(model.id)}</span>
               <span className="text-white font-medium text-sm whitespace-nowrap">
                 {getModelDisplayName(model.id)}
               </span>

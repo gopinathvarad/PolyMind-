@@ -92,7 +92,7 @@ export default function Home() {
               <div className="w-8 h-8 bg-gradient-to-r from-green-400 to-blue-500 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">AI</span>
               </div>
-              <h1 className="text-2xl font-bold text-white">AI Fiesta</h1>
+              <h1 className="text-2xl font-bold text-white">PolyMind</h1>
             </div>
             <div className="flex items-center gap-4">
               <button className="text-gray-400 hover:text-white transition-colors">

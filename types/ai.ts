@@ -3,7 +3,6 @@ export interface AIModel {
   name: string;
   provider: string;
   description: string;
-  icon: string;
 }
 
 export interface AIResponse {
