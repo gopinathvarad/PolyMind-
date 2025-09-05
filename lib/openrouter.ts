@@ -1,11 +1,6 @@
-import { openrouter } from "@openrouter/ai-sdk-provider/openrouter";
+import { openrouter } from "@openrouter/ai-sdk-provider";
 import { generateText } from "ai";
-import { AIModel, AIResponse } from "@/types/ai";
-
-// Initialize OpenRouter client
-const openrouterClient = openrouter({
-  apiKey: process.env.OPENROUTER_API_KEY || "",
-});
+import { AIResponse } from "@/types/ai";
 
 export async function generateAIResponse(
   modelId: string,
@@ -13,7 +8,7 @@ export async function generateAIResponse(
 ): Promise<AIResponse> {
   try {
     const result = await generateText({
-      model: openrouterClient(modelId),
+      model: openrouter(modelId),
       prompt: message,
     });
 

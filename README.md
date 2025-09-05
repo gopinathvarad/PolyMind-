@@ -1,6 +1,6 @@
 # PolyMind - AI Model Comparison Platform
 
-PolyMind is a web application that allows users to compare responses from multiple AI models simultaneously. You can select from GPT-4, Claude 3.5 Sonnet, Gemini 2.0 Flash, and DeepSeek Chat, send a message, and see all responses side by side.
+PolyMind is a web application that allows users to compare responses from multiple AI models simultaneously. You can select from ChatGPT 5, Claude Sonnet 4, Gemini 2.5 Pro, and DeepSeek Chat, send a message, and see all responses side by side.
 
 ## Features
 
@@ -13,9 +13,9 @@ PolyMind is a web application that allows users to compare responses from multip
 
 ## Supported AI Models
 
-- **GPT-4o** (OpenAI) - Most capable GPT-4 model
-- **Claude 3.5 Sonnet** (Anthropic) - Latest Claude model with enhanced capabilities
-- **Gemini 2.0 Flash** (Google) - Google's latest multimodal model
+- **ChatGPT 5** (OpenAI) - Latest GPT-5 model with advanced capabilities
+- **Claude Sonnet 4** (Anthropic) - Latest Claude Sonnet model with enhanced reasoning
+- **Gemini 2.5 Pro** (Google) - Google's most advanced multimodal model
 - **DeepSeek Chat** (DeepSeek) - Advanced reasoning and coding capabilities
 
 ## Getting Started

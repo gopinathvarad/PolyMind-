@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Send } from "lucide-react";
+import { Send, Image, Paperclip, Mic, Star } from "lucide-react";
 
 interface MessageInputProps {
   onSendMessage: (message: string) => void;
@@ -46,29 +46,60 @@ export default function MessageInput({
   };
 
   return (
-    <div className="border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
-      <form onSubmit={handleSubmit} className="flex gap-3">
-        <div className="flex-1 relative">
+    <div className="space-y-4">
+      {/* Action Buttons */}
+      <div className="flex items-center gap-3">
+        <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/30 rounded-lg text-purple-300 hover:text-white hover:bg-purple-500/30 transition-all duration-200">
+          <Image size={16} />
+          <span className="text-sm font-medium">Generate Image</span>
+        </button>
+        <button className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/30 rounded-lg text-purple-300 hover:text-white hover:bg-purple-500/30 transition-all duration-200">
+          <Paperclip size={16} />
+          <span className="text-sm font-medium">Attach Files</span>
+        </button>
+      </div>
+
+      {/* Main Input Area */}
+      <form onSubmit={handleSubmit} className="relative">
+        <div className="relative">
           <textarea
             ref={textareaRef}
             value={message}
             onChange={handleInput}
             onKeyDown={handleKeyDown}
-            placeholder="Ask all selected AI models..."
+            placeholder="Ask me anything..."
             disabled={isLoading || disabled}
-            className="w-full resize-none border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 pr-12 focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
-            style={{ minHeight: "48px", maxHeight: "120px" }}
+            className="w-full resize-none bg-gradient-to-r from-slate-800/50 to-slate-900/50 backdrop-blur-sm border border-purple-500/30 rounded-xl px-6 py-4 pr-20 text-white placeholder-purple-300 focus:ring-2 focus:ring-purple-500/50 focus:border-purple-400 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+            style={{ minHeight: "60px", maxHeight: "120px" }}
           />
+
+          {/* Right Side Icons */}
+          <div className="absolute right-4 top-1/2 transform -translate-y-1/2 flex items-center gap-2">
+            <button
+              type="button"
+              className="p-2 text-purple-400 hover:text-white hover:bg-purple-500/20 rounded-lg transition-all duration-200"
+            >
+              <Mic size={18} />
+            </button>
+            <button
+              type="button"
+              className="p-2 text-purple-400 hover:text-white hover:bg-purple-500/20 rounded-lg transition-all duration-200"
+            >
+              <Star size={18} />
+            </button>
+            <button
+              type="submit"
+              disabled={!message.trim() || isLoading || disabled}
+              className="flex items-center justify-center w-10 h-10 bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 disabled:from-gray-600 disabled:to-gray-700 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-200 shadow-lg"
+            >
+              <Send size={18} />
+            </button>
+          </div>
         </div>
-        <button
-          type="submit"
-          disabled={!message.trim() || isLoading || disabled}
-          className="flex items-center justify-center w-12 h-12 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
-        >
-          <Send size={20} />
-        </button>
       </form>
-      <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+
+      {/* Helper Text */}
+      <div className="text-xs text-purple-400 text-center">
         Press Enter to send, Shift+Enter for new line
       </div>
     </div>

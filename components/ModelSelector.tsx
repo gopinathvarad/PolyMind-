@@ -1,9 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { AIModel } from "@/types/ai";
 import { AVAILABLE_MODELS } from "@/lib/ai-models";
-import { Check, Plus, X } from "lucide-react";
 
 interface ModelSelectorProps {
   selectedModels: string[];
@@ -14,8 +11,6 @@ export default function ModelSelector({
   selectedModels,
   onSelectionChange,
 }: ModelSelectorProps) {
-  const [isOpen, setIsOpen] = useState(false);
-
   const toggleModel = (modelId: string) => {
     if (selectedModels.includes(modelId)) {
       onSelectionChange(selectedModels.filter((id) => id !== modelId));
@@ -24,70 +19,85 @@ export default function ModelSelector({
     }
   };
 
-  const selectedModelsData = selectedModels
-    .map((id) => AVAILABLE_MODELS.find((model) => model.id === id))
-    .filter(Boolean) as AIModel[];
+  const getModelDisplayName = (modelId: string) => {
+    const model = AVAILABLE_MODELS.find((m) => m.id === modelId);
+    if (!model) return modelId;
+
+    // Custom display names to match the latest models
+    const displayNames: Record<string, string> = {
+      "openai/gpt-5-chat": "ChatGPT 5",
+      "anthropic/claude-sonnet-4": "Claude Sonnet 4",
+      "google/gemini-2.5-pro": "Gemini 2.5 Pro",
+      "deepseek/deepseek-r1-0528": "DeepSeek R1",
+    };
+
+    return displayNames[modelId] || model.name;
+  };
+
+  const getModelIcon = (modelId: string) => {
+    const model = AVAILABLE_MODELS.find((m) => m.id === modelId);
+    if (!model) return "🤖";
+
+    // Custom icons for the latest models
+    const customIcons: Record<string, string> = {
+      "openai/gpt-5-chat": "🤖",
+      "anthropic/claude-sonnet-4": "🧠",
+      "google/gemini-2.5-pro": "💎",
+      "deepseek/deepseek-r1-0528": "🔍",
+    };
+
+    return customIcons[modelId] || model.icon;
+  };
 
   return (
-    <div className="relative">
-      <div className="flex flex-wrap gap-2 mb-4">
-        {selectedModelsData.map((model) => (
-          <div
-            key={model.id}
-            className="flex items-center gap-2 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-sm"
-          >
-            <span>{model.icon}</span>
-            <span>{model.name}</span>
+    <div className="flex items-center gap-4 overflow-x-auto pb-2">
+      {AVAILABLE_MODELS.map((model) => {
+        const isSelected = selectedModels.includes(model.id);
+        return (
+          <div key={model.id} className="flex items-center gap-3 min-w-fit">
+            {/* Model Icon and Name */}
+            <div className="flex items-center gap-2">
+              <span className="text-lg">{getModelIcon(model.id)}</span>
+              <span className="text-white font-medium text-sm whitespace-nowrap">
+                {getModelDisplayName(model.id)}
+              </span>
+            </div>
+
+            {/* Selection Indicator */}
+            {isSelected && (
+              <div className="flex items-center">
+                <svg
+                  className="w-4 h-4 text-blue-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+            )}
+
+            {/* Toggle Switch */}
             <button
               onClick={() => toggleModel(model.id)}
-              className="hover:bg-blue-200 dark:hover:bg-blue-800 rounded-full p-1"
+              className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-slate-900 ${
+                isSelected
+                  ? "bg-gradient-to-r from-purple-500 to-blue-500"
+                  : "bg-gray-600"
+              }`}
             >
-              <X size={14} />
+              <span
+                className={`inline-block h-3 w-3 transform rounded-full bg-white transition-transform ${
+                  isSelected ? "translate-x-5" : "translate-x-1"
+                }`}
+              />
             </button>
           </div>
-        ))}
-
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center gap-2 border-2 border-dashed border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 px-3 py-1 rounded-full text-sm hover:border-blue-400 hover:text-blue-500 transition-colors"
-        >
-          <Plus size={14} />
-          Add Model
-        </button>
-      </div>
-
-      {isOpen && (
-        <div className="absolute top-full left-0 z-10 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg p-4 min-w-[300px]">
-          <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-            Select AI Models
-          </h3>
-          <div className="space-y-2">
-            {AVAILABLE_MODELS.map((model) => (
-              <label
-                key={model.id}
-                className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer"
-              >
-                <input
-                  type="checkbox"
-                  checked={selectedModels.includes(model.id)}
-                  onChange={() => toggleModel(model.id)}
-                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                />
-                <span className="text-lg">{model.icon}</span>
-                <div className="flex-1">
-                  <div className="font-medium text-sm">{model.name}</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">
-                    {model.description}
-                  </div>
-                </div>
-                {selectedModels.includes(model.id) && (
-                  <Check size={16} className="text-blue-600" />
-                )}
-              </label>
-            ))}
-          </div>
-        </div>
-      )}
+        );
+      })}
     </div>
   );
 }
