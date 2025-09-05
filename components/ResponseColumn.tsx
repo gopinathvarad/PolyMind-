@@ -46,7 +46,7 @@ export default function ResponseColumn({
   };
 
   return (
-    <div className="flex flex-col h-[500px] bg-black border border-gray-700 rounded-lg overflow-hidden">
+    <div className="flex flex-col h-[400px] bg-black border border-gray-700 rounded-lg overflow-hidden">
       {/* Header */}
       <div className="p-4">
         <div className={`${getHeaderColor()} rounded-lg p-4 text-white`}>

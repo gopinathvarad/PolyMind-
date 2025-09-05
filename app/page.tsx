@@ -129,7 +129,7 @@ export default function Home() {
       </header>
 
       {/* Main Content Area */}
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-6 pb-40">
         <div className="max-w-7xl mx-auto">
           {/* Chat Boxes - Horizontal Layout */}
           {selectedModels.length > 0 && (
@@ -162,9 +162,6 @@ export default function Home() {
           />
         </div>
       </div>
-
-      {/* Spacer for fixed input */}
-      <div className="h-32" />
     </div>
   );
 }
