@@ -1,100 +1,167 @@
-# PolyMind - AI Model Comparison Platform
+# PolyMind
 
-PolyMind is a web application that allows users to compare responses from multiple AI models simultaneously. You can select from ChatGPT 5, Claude Sonnet 4, Gemini 2.5 Pro, and DeepSeek Chat, send a message, and see all responses side by side.
+PolyMind is an AI model comparison and chat platform. It lets you sign in, create chat sessions, select multiple AI models, and view their responses side‑by‑side in real time. It’s built for researchers, engineers, and curious users who want to quickly benchmark prompts across leading LLMs.
 
-## Features
+## What you can do with PolyMind
 
-- **Multi-Model Comparison**: Compare responses from up to 4 AI models simultaneously
-- **Real-time Responses**: All models respond in parallel for faster comparison
-- **Responsive Design**: Adaptive column layout based on the number of selected models
-- **Copy Functionality**: Easy copying of individual responses
-- **Modern UI**: Clean, dark-mode compatible interface
-- **OpenRouter Integration**: Uses OpenRouter API for accessing multiple AI models
+- **Compare multiple models at once**: View up to 4 model responses in parallel.
+- **Run faster prompt iterations**: Models stream responses concurrently for quick side‑by‑side review.
+- **Stay organized**: Authenticated chat sessions are saved with history you can revisit.
+- **Copy easily**: Copy any individual response with one click.
+- **Use modern UX**: Responsive, dark‑mode friendly interface.
 
-## Supported AI Models
+## Models supported
 
-- **ChatGPT 5** (OpenAI) - Latest GPT-5 model with advanced capabilities
-- **Claude Sonnet 4** (Anthropic) - Latest Claude Sonnet model with enhanced reasoning
-- **Gemini 2.5 Pro** (Google) - Google's most advanced multimodal model
-- **DeepSeek Chat** (DeepSeek) - Advanced reasoning and coding capabilities
+- ChatGPT 5 (OpenAI)
+- Claude Sonnet 4 (Anthropic)
+- Gemini 2.5 Pro (Google)
+- DeepSeek Chat (DeepSeek)
 
-## Getting Started
+## Tech stack
+
+- Next.js 15 (App Router) + React 19
+- TypeScript
+- Tailwind CSS 4
+- Supabase (Auth + Postgres + RLS)
+- OpenRouter (unified access to multiple AI models)
+- Vercel AI SDK (`ai`)
+- Lucide React (icons)
+
+## Architecture at a glance
+
+- `app/` routes power the UI and server actions.
+- `app/api/chat/route.ts` streams model responses via OpenRouter.
+- Supabase manages auth and data for `users`, `chat_sessions`, and `messages` with RLS.
+- Client selects models and sends prompts; server fans out to selected providers and streams results.
+
+---
+
+## Setup and installation
 
 ### Prerequisites
 
 - Node.js 18+
-- OpenRouter API key (get one at [openrouter.ai](https://openrouter.ai/keys))
+- An OpenRouter API key (create one at `https://openrouter.ai/keys`)
+- A Supabase project with URL and anon key
 
-### Installation
-
-1. Clone the repository:
+### 1) Clone and install
 
 ```bash
 git clone <your-repo-url>
-cd PolyMind
-```
-
-2. Install dependencies:
-
-```bash
+cd polymind
 npm install
 ```
 
-3. Set up environment variables:
-   Create a `.env.local` file in the root directory:
+### 2) Configure environment variables
 
-```bash
+Create a `.env.local` file in the project root and add:
+
+```env
+# OpenRouter
 OPENROUTER_API_KEY=your_openrouter_api_key_here
+
+# Supabase (client-side usage)
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
 ```
 
-4. Run the development server:
+### 3) Set up Supabase (database + auth)
+
+Follow the step‑by‑step guide in `SUPABASE_SETUP.md`. It covers:
+
+- Creating `users`, `chat_sessions`, and `messages` tables
+- Enabling Row Level Security and policies
+- Configuring auth settings (Site URL and Redirect URLs)
+
+Quick start (summary):
+
+1. Open your Supabase project → Settings → API to copy URL and anon key.
+2. Paste them into `.env.local` as shown above.
+3. In Supabase SQL editor, run the SQL from the migrations described in `SUPABASE_SETUP.md` to create tables and policies.
+4. In Authentication → Settings, set Site URL to `http://localhost:3000` and add `http://localhost:3000/**` to Redirect URLs for development.
+
+### 4) Run the app
 
 ```bash
 npm run dev
 ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser.
+Visit `http://localhost:3000`.
+
+---
 
 ## Usage
 
-1. **Select Models**: Click "Add Model" to select which AI models you want to compare
-2. **Send Message**: Type your question or prompt in the message box at the bottom
-3. **Compare Responses**: View all responses side by side in organized columns
-4. **Copy Responses**: Click the copy button on any response to copy it to your clipboard
+1. Sign up or sign in.
+2. Start a new chat session.
+3. Select models to compare.
+4. Enter your prompt and send.
+5. Review, copy, and iterate on responses.
 
-## Project Structure
+---
+
+## Project structure
 
 ```
 ├── app/
-│   ├── api/chat/          # API route for handling AI requests
-│   ├── page.tsx           # Main application page
-│   └── layout.tsx         # Root layout
+│   ├── (protected)/
+│   │   ├── chat/[sessionId]/page.tsx
+│   │   ├── history/page.tsx
+│   │   └── layout.tsx
+│   ├── api/
+│   │   └── chat/route.ts
+│   ├── login/page.tsx
+│   ├── signup/page.tsx
+│   ├── layout.tsx
+│   └── middleware.ts
 ├── components/
-│   ├── ModelSelector.tsx  # Model selection component
-│   ├── MessageInput.tsx   # Message input component
-│   └── ResponseColumn.tsx # Individual response display
+│   ├── AuthModal.tsx
+│   ├── MessageInput.tsx
+│   ├── ModelSelector.tsx
+│   └── ResponseColumn.tsx
+├── contexts/
+│   └── AuthContext.tsx
 ├── lib/
-│   ├── ai-models.ts       # AI model configurations
-│   └── openrouter.ts      # OpenRouter API integration
+│   ├── ai-models.ts
+│   ├── auth.ts
+│   ├── database.ts
+│   ├── openrouter.ts
+│   └── supabase.ts
+├── supabase/
+│   └── migrations/
+│       ├── 001_create_users_table.sql
+│       ├── 002_create_chat_sessions_table.sql
+│       └── 003_create_messages_table.sql
 └── types/
-    └── ai.ts              # TypeScript type definitions
+    └── ai.ts
 ```
 
-## Technologies Used
+---
 
-- **Next.js 15** - React framework
-- **TypeScript** - Type safety
-- **Tailwind CSS** - Styling
-- **OpenRouter** - AI model access
-- **Lucide React** - Icons
+## Scripts
+
+- `npm run dev` – Start development server
+- `npm run build` – Build for production
+- `npm run start` – Start production server
+- `npm run lint` – Run ESLint
+
+---
+
+## Troubleshooting
+
+- Auth errors: verify `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` in `.env.local` and Supabase Site/Redirect URLs.
+- Database/RLS issues: confirm you ran all SQL migrations and policies from `SUPABASE_SETUP.md`.
+- Model errors: ensure `OPENROUTER_API_KEY` is valid and has access to the selected models.
+
+---
 
 ## Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Submit a pull request
+4. Open a pull request
 
 ## License
 
-This project is licensed under the MIT License.
+MIT
