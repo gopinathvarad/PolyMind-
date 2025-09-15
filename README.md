@@ -36,6 +36,26 @@ PolyMind is an AI model comparison and chat platform. It lets you sign in, creat
 
 ---
 
+## The problem PolyMind solves
+
+Teams adopting LLMs struggle to pick the right model and prompt under constraints of quality, cost, latency, and consistency. Evaluations are often ad‑hoc, manual, and slow, which leads to expensive guesswork and production regressions.
+
+| Industry challenge                           | Impact                            | How PolyMind helps                                        | What you can track                       |
+| -------------------------------------------- | --------------------------------- | --------------------------------------------------------- | ---------------------------------------- |
+| Model selection is fragmented across vendors | Slow evaluations, vendor lock‑in  | One UI to query multiple providers via OpenRouter         | Response quality, failure modes          |
+| Prompt iterations are manual and serial      | Days of trial‑and‑error           | Parallel, side‑by‑side responses for fast comparison      | Win rates per prompt version             |
+| Hard to balance quality vs cost vs latency   | Surprising bills and slow UX      | Compare models with the same prompt and measure tradeoffs | Tokens, response time, perceived quality |
+| Poor reproducibility of experiments          | Inconsistent results, regressions | Authenticated sessions with saved history                 | Versioned prompts and model choices      |
+| Sharing findings is tedious                  | Knowledge silos                   | Copy responses and share links to sessions                | Team review efficiency                   |
+
+Who benefits:
+
+- Product and research teams choosing a default LLM
+- Prompt engineers iterating on prompts/system messages
+- Engineering leads tracking cost/latency and maintaining quality bars
+
+---
+
 ## Setup and installation
 
 ### Prerequisites
