@@ -1,0 +1,18 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:3000",
+  "loginUser": "gvarad2001@gmail.com",
+  "loginPassword": "vC5:m7tS",
+  "executionArgs": {
+    "projectName": "polymind",
+    "projectPath": "/Users/gopinathvaradarajan/Desktop/polymind",
+    "testIds": [],
+    "additionalInstruction": "Focus tests on auth flows (signup, login), protected route access, chat page rendering, message send flow via UI, and history page navigation; include viewport 1280x800; use email/password from env if available; handle Next.js 15 App Router navigation; wait for network idle after each navigation.",
+    "envs": {
+      "API_KEY": "sk-user-JB6SnYRsW6cqvr6MFL9YXdIv3Lk3mh-G7iPl5U5eQfU2clwJFwQw4W_81k9EyTMrDSEen4Y5Dgggynz2XKa5BaikQFLbgTCdZKfpzSm40RcwhitlBWJdNo-8m0_N_oykZMw"
+    }
+  },
+  "proxy": "http://d38de265-d83f-43d8-ab92-e0886063fe55:5WeDlDpu9CHo7DyOmTpSvielpLnBssBu@tun.testsprite.com:8080"
+}

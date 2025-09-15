@@ -1,0 +1,131 @@
+{
+  "meta": {
+    "project": "Polymind Frontend Testing",
+    "date": "2025-09-13",
+    "prepared_by": "Software Development Manager"
+  },
+  "product_overview": "Polymind is a Next.js application offering protected chat sessions using Supabase Authentication and OpenRouter-based AI chat APIs. It enables users to sign up, log in, create and resume chat sessions with dynamic AI model selection, while maintaining chat history and providing a responsive, accessible user experience.",
+  "core_goals": [
+    "Verify authentication workflows and protected route enforcement",
+    "Ensure chat session creation, message sending, and real-time streamed AI responses",
+    "Validate discoverability and continuity through chat history management",
+    "Confirm that model selection correctly affects API payloads and UI state",
+    "Enforce accessibility standards with keyboard navigation, ARIA labeling, and color contrast",
+    "Guarantee graceful failure handling for network, authentication, and API errors",
+    "Meet performance budgets for loading times and UI responsiveness"
+  ],
+  "key_features": [
+    "User authentication via Supabase with signup, login, session context, and protected routes enforced by middleware",
+    "Chat interface supporting session-based routing, message input, model selection, and streamed assistant responses",
+    "Chat history page listing prior sessions with navigation capabilities",
+    "Edge API route handling chat requests to OpenRouter and OpenAI AI providers with streaming support",
+    "Database integration using Supabase Postgres for users, chat sessions, and messages",
+    "Global app shell and styling using Next.js, Tailwind CSS, and React components to ensure responsiveness and accessibility"
+  ],
+  "user_flow_summary": [
+    "New users sign up via the signup page then access the protected chat area with no existing sessions",
+    "Returning users log in, browse chat history, and resume or start new chat sessions",
+    "Power users switch AI models dynamically within chats and maintain multiple active sessions",
+    "Unauthenticated users attempting to access protected routes are redirected to login",
+    "Users can send messages that are appended immediately, followed by streamed AI responses without blocking UI",
+    "History page users can select past chat sessions and navigate seamlessly",
+    "Model selection changes update the current session's API request payload and persist UI state"
+  ],
+  "validation_criteria": [
+    "Signup validates form inputs with inline error displays; successful signup authenticates user or routes to login",
+    "Login accepts valid credentials, rejects invalid ones with errors, and allows access to protected routes",
+    "Protected middleware redirects unauthenticated users to the login page",
+    "Chat messages sent append user bubbles; streamed AI responses render progressively without UI blocking",
+    "History page accurately lists user-specific chat sessions and allows navigation to each",
+    "Model selector updates selection and ensures API requests reflect the choice",
+    "All interactive controls are keyboard accessible with visible focus and labeled ARIA attributes",
+    "Color contrast meets WCAG AA standards",
+    "First meaningful paint is under 2.5 seconds on mid-tier hardware with throttling",
+    "Chat input responses update locally within 100ms and streaming renders without jank",
+    "Network or API failures present non-blocking errors with retry options",
+    "User session state persists across page navigations"
+  ],
+  "code_summary": {
+    "tech_stack": [
+      "TypeScript",
+      "Next.js 15 (App Router)",
+      "React 19",
+      "Tailwind CSS 4",
+      "Supabase (Auth, Postgres, RLS)",
+      "OpenAI SDK",
+      "OpenRouter AI provider"
+    ],
+    "features": [
+      {
+        "name": "Authentication (Signup/Login, Session, Protected Routes)",
+        "description": "User signup/login via Supabase Auth, session context, protected routes with middleware, auth modal UI.",
+        "files": [
+          "app/login/page.tsx",
+          "app/signup/page.tsx",
+          "app/(protected)/layout.tsx",
+          "app/(protected)/page.tsx",
+          "app/middleware.ts",
+          "middleware.ts",
+          "components/AuthModal.tsx",
+          "contexts/AuthContext.tsx",
+          "lib/auth.ts",
+          "lib/supabase.ts",
+          "utils/supabase/middleware.ts",
+          "utils/supabase/server.ts"
+        ]
+      },
+      {
+        "name": "Chat Sessions UI",
+        "description": "Chat interface with session-based routing, message input, model selector, and response rendering.",
+        "files": [
+          "app/(protected)/chat/[sessionId]/page.tsx",
+          "components/MessageInput.tsx",
+          "components/ModelSelector.tsx",
+          "components/ResponseColumn.tsx",
+          "types/ai.ts"
+        ]
+      },
+      {
+        "name": "Chat API Route",
+        "description": "Edge/server route handling chat requests to AI providers using OpenAI/OpenRouter.",
+        "files": [
+          "app/api/chat/route.ts",
+          "lib/openrouter.ts",
+          "lib/ai-models.ts"
+        ]
+      },
+      {
+        "name": "Chat History",
+        "description": "History page to list prior chat sessions and navigate to them.",
+        "files": [
+          "app/(protected)/history/page.tsx",
+          "app/history"
+        ]
+      },
+      {
+        "name": "Database Integration (Supabase)",
+        "description": "Supabase Postgres schema for users, chat sessions, and messages with migrations.",
+        "files": [
+          "supabase/migrations/001_create_users_table.sql",
+          "supabase/migrations/002_create_chat_sessions_table.sql",
+          "supabase/migrations/003_create_messages_table.sql",
+          "lib/database.ts",
+          "SUPABASE_SETUP.md"
+        ]
+      },
+      {
+        "name": "App Shell and Styles",
+        "description": "Global layout, styling, and static assets.",
+        "files": [
+          "app/layout.tsx",
+          "app/globals.css",
+          "public/*.svg",
+          "next.config.ts",
+          "tsconfig.json",
+          "eslint.config.mjs",
+          "postcss.config.mjs"
+        ]
+      }
+    ]
+  }
+}

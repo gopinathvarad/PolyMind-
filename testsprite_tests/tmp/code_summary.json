@@ -1,0 +1,80 @@
+{
+  "tech_stack": [
+    "TypeScript",
+    "Next.js 15 (App Router)",
+    "React 19",
+    "Tailwind CSS 4",
+    "Supabase (Auth, Postgres, RLS)",
+    "OpenAI SDK",
+    "OpenRouter AI provider"
+  ],
+  "features": [
+    {
+      "name": "Authentication (Signup/Login, Session, Protected Routes)",
+      "description": "User signup/login via Supabase Auth, session context, protected routes with middleware, auth modal UI.",
+      "files": [
+        "app/login/page.tsx",
+        "app/signup/page.tsx",
+        "app/(protected)/layout.tsx",
+        "app/(protected)/page.tsx",
+        "app/middleware.ts",
+        "middleware.ts",
+        "components/AuthModal.tsx",
+        "contexts/AuthContext.tsx",
+        "lib/auth.ts",
+        "lib/supabase.ts",
+        "utils/supabase/middleware.ts",
+        "utils/supabase/server.ts"
+      ]
+    },
+    {
+      "name": "Chat Sessions UI",
+      "description": "Chat interface with session-based routing, message input, model selector, and response rendering.",
+      "files": [
+        "app/(protected)/chat/[sessionId]/page.tsx",
+        "components/MessageInput.tsx",
+        "components/ModelSelector.tsx",
+        "components/ResponseColumn.tsx",
+        "types/ai.ts"
+      ]
+    },
+    {
+      "name": "Chat API Route",
+      "description": "Edge/server route handling chat requests to AI providers using OpenAI/OpenRouter.",
+      "files": [
+        "app/api/chat/route.ts",
+        "lib/openrouter.ts",
+        "lib/ai-models.ts"
+      ]
+    },
+    {
+      "name": "Chat History",
+      "description": "History page to list prior chat sessions and navigate to them.",
+      "files": ["app/(protected)/history/page.tsx", "app/history"]
+    },
+    {
+      "name": "Database Integration (Supabase)",
+      "description": "Supabase Postgres schema for users, chat sessions, and messages with migrations.",
+      "files": [
+        "supabase/migrations/001_create_users_table.sql",
+        "supabase/migrations/002_create_chat_sessions_table.sql",
+        "supabase/migrations/003_create_messages_table.sql",
+        "lib/database.ts",
+        "SUPABASE_SETUP.md"
+      ]
+    },
+    {
+      "name": "App Shell and Styles",
+      "description": "Global layout, styling, and static assets.",
+      "files": [
+        "app/layout.tsx",
+        "app/globals.css",
+        "public/*.svg",
+        "next.config.ts",
+        "tsconfig.json",
+        "eslint.config.mjs",
+        "postcss.config.mjs"
+      ]
+    }
+  ]
+}

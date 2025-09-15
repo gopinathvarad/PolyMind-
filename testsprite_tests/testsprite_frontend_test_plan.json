@@ -1,0 +1,399 @@
+[
+  {
+    "id": "TC001",
+    "title": "Signup with valid credentials",
+    "description": "Verify that a new user can sign up with valid inputs and is authenticated or redirected to login page successfully.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to signup page"
+      },
+      {
+        "type": "action",
+        "description": "Input valid user details (email, password, confirm password)"
+      },
+      {
+        "type": "action",
+        "description": "Submit the signup form"
+      },
+      {
+        "type": "assertion",
+        "description": "Check that signup form validation passes with no inline errors"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify user is authenticated or redirected to login page after signup"
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "Signup form validation errors",
+    "description": "Check that the signup form shows inline validation errors for invalid or incomplete inputs.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to signup page"
+      },
+      {
+        "type": "action",
+        "description": "Submit empty form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify inline errors for all required fields"
+      },
+      {
+        "type": "action",
+        "description": "Input invalid email format and mismatched passwords"
+      },
+      {
+        "type": "action",
+        "description": "Submit the form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify appropriate inline validation error messages are displayed"
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "Login with valid credentials",
+    "description": "Verify that a user can login successfully using valid email and password and access protected routes.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to login page"
+      },
+      {
+        "type": "action",
+        "description": "Input valid email and password"
+      },
+      {
+        "type": "action",
+        "description": "Submit login form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify login is successful and user is redirected to protected chat area"
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Login with invalid credentials",
+    "description": "Verify that login fails with invalid credentials and appropriate error messages are displayed.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to login page"
+      },
+      {
+        "type": "action",
+        "description": "Input invalid email or password"
+      },
+      {
+        "type": "action",
+        "description": "Submit login form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify login fails and error message indicating invalid credentials is shown"
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Protected routes redirect unauthenticated users",
+    "description": "Verify that unauthenticated users trying to access protected pages are redirected to the login page.",
+    "category": "security",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Attempt to navigate to protected chat or history pages without authentication"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify redirection to login page occurs"
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "Create new chat session after login",
+    "description": "Verify that a logged-in user can create a new chat session and is routed to the new session page with empty chat history.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login with valid user"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to chat page and initiate new chat session"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify new empty chat session is created and session ID appears in URL"
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Send chat message and receive streamed AI response",
+    "description": "Verify that user can send a chat message, that it appears immediately, and that AI assistant streaming response renders progressively without blocking UI.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Open existing or new chat session"
+      },
+      {
+        "type": "action",
+        "description": "Input a user message in the chat input field"
+      },
+      {
+        "type": "action",
+        "description": "Send the message"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify user message appears immediately in chat window"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify AI assistant message streams and updates progressively without UI blocking"
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Switch AI model dynamically within chat session",
+    "description": "Verify that changing the AI model selection updates the session's API request payload and UI state accordingly without disrupting current chat flow.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Open existing chat session"
+      },
+      {
+        "type": "action",
+        "description": "Change AI model selection using the model selector component"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify selected model UI state updates immediately"
+      },
+      {
+        "type": "action",
+        "description": "Send a new message"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify API request payload contains correct AI model parameter and response is from selected model"
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Chat history page lists user sessions accurately",
+    "description": "Verify that chat history page shows a list of prior chat sessions specific to the logged-in user and allows navigation to each session.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login with user having multiple chat sessions"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to chat history page"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify chat sessions belonging to logged-in user are listed with correct metadata"
+      },
+      {
+        "type": "action",
+        "description": "Click on a chat session entry"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify navigation to the corresponding chat session page"
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Keyboard accessibility for all interactive controls",
+    "description": "Verify that all interactive elements (inputs, buttons, selectors) are accessible via keyboard navigation with visible focus and properly labeled ARIA attributes.",
+    "category": "ui",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate through signup, login, chat, and history pages using Tab and Shift+Tab keys"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify all interactive controls receive focus in a logical order with visible focus indicators"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify ARIA labels are present and descriptive for screen reader users"
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "Color contrast meets WCAG AA standards",
+    "description": "Verify that all text and interactive UI elements meet color contrast requirements defined by WCAG AA standards for readability and accessibility.",
+    "category": "ui",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Use accessibility tools or browser dev tools to measure color contrast ratios on all key UI text and controls"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify all contrast ratios meet or exceed WCAG AA threshold (4.5:1 for normal text)"
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "Redirect unauthenticated user from protected route",
+    "description": "Verify that accessing a protected route while signed out results in immediate redirection to login without exposing any protected content.",
+    "category": "security",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Open a protected route URL in a new incognito browser window or after logging out"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify user is redirected to login page before protected content loads"
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "User session persistence across page navigations",
+    "description": "Verify that the user's authenticated session state persists across navigation between different pages of the app.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login with valid user"
+      },
+      {
+        "type": "action",
+        "description": "Navigate sequentially between chat, history, and other protected pages"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify user remains authenticated and session context is retained without requiring re-login"
+      }
+    ]
+  },
+  {
+    "id": "TC014",
+    "title": "Handle network failure gracefully during chat message send",
+    "description": "Verify that if the network or API fails during sending a chat message, a non-blocking error is displayed with options to retry.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Open chat session"
+      },
+      {
+        "type": "action",
+        "description": "Simulate network or API failure when sending a message (e.g., using mock or throttling)"
+      },
+      {
+        "type": "action",
+        "description": "Send chat message"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify non-blocking error notification appears"
+      },
+      {
+        "type": "action",
+        "description": "Attempt to retry send"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify message is sent successfully after retry if network is restored"
+      }
+    ]
+  },
+  {
+    "id": "TC015",
+    "title": "Performance: First meaningful paint under 2.5 seconds",
+    "description": "Verify that the initial load of the app, particularly login and chat pages, achieves first meaningful paint within 2.5 seconds on mid-tier hardware under network throttling.",
+    "category": "performance",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Load the login and protected chat pages using performance profiling tools with network throttling simulating mid-tier hardware"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify first meaningful paint occurs in less than or equal to 2.5 seconds"
+      }
+    ]
+  },
+  {
+    "id": "TC016",
+    "title": "Chat input updates locally within 100ms",
+    "description": "Verify that user message appears in chat UI within 100ms of sending to ensure responsive UI experience.",
+    "category": "performance",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send message in chat input"
+      },
+      {
+        "type": "assertion",
+        "description": "Measure that the user message bubble appears locally within 100ms of sending"
+      }
+    ]
+  },
+  {
+    "id": "TC017",
+    "title": "Streaming AI response renders without jank",
+    "description": "Verify streamed assistant responses update the UI progressively with smooth animations and do not cause UI freezing or jank.",
+    "category": "performance",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send a message that triggers a streaming AI response"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that streamed response updates progressively and UI remains responsive with no jank"
+      }
+    ]
+  }
+]
